@@ -1,0 +1,42 @@
+name: migrate-lanes
+description: Fail a pull request when its database migrations collide with the base branch or other open branches.
+branding:
+  icon: git-merge
+  color: orange
+inputs:
+  base:
+    description: Base branch name (default = PR base branch, else the repository default branch).
+    required: false
+    default: ""
+  remotes:
+    description: Also compare against every other branch on origin (catches collisions between open PRs).
+    required: false
+    default: "true"
+  version:
+    description: migrate-lanes version to install (go install ...@version).
+    required: false
+    default: latest
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-go@v5
+      with:
+        go-version: stable
+        cache: false
+    - name: Install migrate-lanes
+      shell: bash
+      env:
+        ML_VERSION: ${{ inputs.version }}
+      run: go install "github.com/LysCongThanh/migrate-lanes@${ML_VERSION}"
+    - name: Fetch branches
+      shell: bash
+      run: git fetch --no-tags --prune origin '+refs/heads/*:refs/remotes/origin/*'
+    - name: Scan migrations
+      shell: bash
+      env:
+        ML_BASE: ${{ inputs.base || github.base_ref || github.event.repository.default_branch }}
+        ML_REMOTES: ${{ inputs.remotes }}
+      run: |
+        args=(scan --base "origin/${ML_BASE}")
+        if [ "${ML_REMOTES}" = "true" ]; then args+=(--remotes); fi
+        "$(go env GOPATH)/bin/migrate-lanes" "${args[@]}"

@@ -1,0 +1,28 @@
+name: Bug report
+description: A collision was missed, reported wrongly, or the CLI misbehaved.
+labels: [bug]
+body:
+  - type: input
+    id: tool
+    attributes:
+      label: Migration tool
+      placeholder: golang-migrate / goose / drizzle / alembic / ...
+    validations:
+      required: true
+  - type: textarea
+    id: layout
+    attributes:
+      label: Migration file names per lane
+      description: The relevant file names on base and on each branch/worktree (no secrets or schema contents needed).
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output of `migrate-lanes scan --json`
+      render: json
+  - type: input
+    id: version
+    attributes:
+      label: migrate-lanes version and OS
+      placeholder: migrate-lanes v0.1.0, macOS 15

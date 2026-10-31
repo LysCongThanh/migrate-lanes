@@ -1,0 +1,29 @@
+name: New migration tool (detector)
+description: Ask for (or volunteer to write) a detector for another migration tool.
+labels: [detector, good first issue]
+body:
+  - type: input
+    id: tool
+    attributes:
+      label: Tool and link
+      placeholder: "Flyway - https://documentation.red-gate.com/flyway"
+    validations:
+      required: true
+  - type: textarea
+    id: naming
+    attributes:
+      label: File layout and naming rule
+      description: Where migrations live, how versions are encoded, any journal/graph file.
+    validations:
+      required: true
+  - type: textarea
+    id: collision
+    attributes:
+      label: What breaks when two branches add migrations?
+      description: Duplicate versions, out-of-order, multiple heads... Link docs or issues if you have them.
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Contribution
+      options:
+        - label: I would like to implement this (see CONTRIBUTING.md "Add a detector")
