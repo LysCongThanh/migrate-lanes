@@ -2,8 +2,7 @@
 
 Catch database migration collisions **before merge** when several branches, worktrees or AI agents add migrations in parallel.
 
-<!-- GIF placeholder: run `vhs demo.tape` to render demo.gif, then uncomment -->
-<!-- ![migrate-lanes demo](demo.gif) -->
+![migrate-lanes demo](docs/demo.gif)
 
 ```text
 $ migrate-lanes scan
